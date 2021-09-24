@@ -1,1 +1,90 @@
-// Here you can add other styles
+.spinner-border {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    vertical-align: text-bottom;
+    border: .05em solid currentColor;
+    border-right-color: currentcolor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    -webkit-animation: .75s linear infinite spinner-border;
+    animation: .75s linear infinite spinner-border;
+}
+
+[contenteditable] {
+    outline: 0px solid transparent;
+}
+
+.code-box {
+    border: 1px solid #991b554a;
+    &:focus-visible,&:focus {
+        border: 1px solid #991b55;
+    }
+  }
+/* Please see the article */
+
+#editing, #highlighting {
+    /* Both elements need the same text and space styling so they are directly on top of each other */
+    margin: 10px;
+    padding: 10px;
+    border: 0;
+    width: calc(100% - 32px);
+    height: 150px;
+  }
+  #editing, #highlighting, #highlighting * {
+    /* Also add text styles to highlighing tokens */
+    font-size: 15pt;
+    font-family: monospace;
+    line-height: 20pt;
+    tab-size: 2;
+  }
+  
+  
+  #editing, #highlighting {
+    /* In the same place */
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  
+  
+  /* Move the textarea in front of the result */
+  
+  #editing {
+    z-index: 1;
+  }
+  #highlighting {
+    z-index: 0;
+  }
+  
+  
+  /* Make textarea almost completely transparent */
+  
+  #editing {
+    color: transparent;
+    background: transparent;
+    caret-color: white; /* Or choose your favourite color */
+  }
+  
+  /* Can be scrolled */
+  #editing, #highlighting {
+    overflow: auto;
+    white-space: nowrap; /* Allows textarea to scroll horizontally */
+  }
+  
+  /* No resize on textarea */
+  #editing {
+    resize: none;
+  }
+  
+  /* Paragraphs; First Image */
+  * {
+    font-family: "Fira Code", monospace;
+  }
+  p code {
+    border-radius: 2px;
+    background-color: #eee;
+    color: #111;
+  }
+  
+  

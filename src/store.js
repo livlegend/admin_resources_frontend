@@ -6,23 +6,65 @@ Vue.use(Vuex);
 const state = {
   sidebarShow: "responsive",
   sidebarMinimize: false,
+  files:[]
 };
 
-// const getters = {
-//   ventes: (state) => {
-//       return state.ventes
-//   },
-// }
+const getters = {
+  files: (state) => {
+      return state.files
+  },
+}
 
 const actions = {
-  /**
-   * Recuperer la liste des attributs possible pour un champ
-   */
-  postFile(data) {
+
+  files({commit}) {
+    return new Promise((resolve, reject) => {
+      ApiAdmin._files().then(
+        (response) => {
+          resolve(response);
+          commit('SET_FILES',response)
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    });
+  },
+
+  deleteFile({commit},idFile) {
+    return new Promise((resolve, reject) => {
+      ApiAdmin._deleteFile(idFile).then(
+        (response) => {
+          resolve(response);
+          commit
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    });
+  },
+
+  postFile({commit},data) {
     return new Promise((resolve, reject) => {
       ApiAdmin._postFile(data).then(
         (response) => {
           resolve(response);
+          commit
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    });
+  },
+
+  updateFile({commit},data) {
+    return new Promise((resolve, reject) => {
+      ApiAdmin._updateFile(data.id, data.formData).then(
+        (response) => {
+          resolve(response);
+          commit
         },
         (error) => {
           reject(error);
@@ -44,8 +86,8 @@ const mutations = {
     state[variable] = value;
   },
 
-  SET_VENTES(state, ventes) {
-    state.ventes = ventes;
+  SET_FILES(state, files) {
+    state.files = files;
   },
 };
 
@@ -53,4 +95,5 @@ export default new Vuex.Store({
   state,
   mutations,
   actions,
+  getters
 });

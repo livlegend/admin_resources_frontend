@@ -8,7 +8,8 @@ const Home = () => import('@/views/Home')
 const TheContainer = () => import('@/containers/TheContainer')
 
 // Views
-const FileUpload = () => import('@/views/admin/FileUpload')
+const FileUpload = () => import('@/views/admin/files/FileUpload')
+const FileList = () => import('@/views/admin/files/FileList')
 const HtmlSnippet = () => import('@/views/admin/HtmlSnippet')
 const SaveLink = () => import('@/views/admin/SaveLink')
 
@@ -35,14 +36,25 @@ function configRoutes () {
     },
     {
       path: '/admin',
-      name: 'admin',
+      name: 'Admin',
       redirect: '/admin/file-upload',
       component:TheContainer,
       children: [
         {
           path: 'file-upload',
           name: 'File Upload',
-          component: FileUpload
+          component: FileUpload,
+        },
+        {
+          path: 'file-upload/:id',
+          name: 'File Update',
+          component: FileUpload,
+          props:true
+        },
+        {
+          path: 'file-list',
+          name: 'File List',
+          component: FileList
         },
         {
           path: 'html-snippet',

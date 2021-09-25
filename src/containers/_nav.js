@@ -19,7 +19,7 @@ export default [
         name: 'Link',
         to: '/admin/save-link',
         icon: 'cil-pencil'
-      }
+      },
     ]
   }
 ]

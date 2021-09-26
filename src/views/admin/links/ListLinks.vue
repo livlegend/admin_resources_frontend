@@ -4,15 +4,12 @@
       <CCard>
         <CCardHeader>
           <CRow class="mx-2">
-            <strong>Files list
-                
-            </strong>
+            <strong>Links list </strong>
 
-             <router-link class="ml-auto" to="/admin/file-upload">
-                <strong> Back to creating new </strong>
-              </router-link>
+            <router-link class="ml-auto" to="/admin/save-link">
+              <strong> Back to creating new </strong>
+            </router-link>
           </CRow>
-          
         </CCardHeader>
         <CCardBody>
           <CRow>
@@ -27,10 +24,25 @@
                 sorter
                 pagination
               >
-                <template #title="{item}">
+                <!-- <template #title="{item}">
                   <a :href="remote_url + '/upload_files/' + item.file_link" target="_blank" > <strong>{{
                     item.title
                   }}</strong></a>
+                </template> -->
+
+                <template #open_new_tab="{item}">
+                    <td class="py-2">
+                        
+                        <CBadge v-if="item.open_new_tab || item.open_new_tab==1" color="primary">
+                            YES
+                        </CBadge>
+
+                        <CBadge v-else color="secondary">
+                            NO
+                        </CBadge>
+                        
+                    </td>
+                    
                 </template>
 
                 <template #actions="{item, index}">
@@ -41,8 +53,7 @@
                       variant="outline"
                       square
                       size="sm"
-                      @click='passToUpdate(index)'
-                      
+                      @click="passToUpdate(item)"
                     >
                       Edit
                     </CButton>
@@ -63,6 +74,7 @@
         </CCardBody>
       </CCard>
     </CCol>
+    <!-- modal for deleting confirmation -->
     <CModal
       title="Confirm suppression"
       color="danger"
@@ -81,22 +93,24 @@
 
 <script>
 import { CDataTable } from "@coreui/vue/src";
-import { remote_url } from "@/api/api.js";
 
 export default {
-  name: "FileUpload",
+  name: "ListHtmlSnippets",
   components: { CDataTable },
   data() {
     return {
       items: [],
-      remote_url: remote_url,
       danger_modal: false,
+      primary_modal:false,
       selected_item: {
         index: null,
         item: {},
       },
+      code_to_display:"",
       fields: [
         "title",
+        "link",
+        {key:'open_new_tab', label:"Open in new tab"},
         {
           key: "actions",
           label: "",
@@ -109,37 +123,40 @@ export default {
   },
   computed: {},
   mounted() {
-    this.$store.dispatch("files").then((data) => {
-      this.items = data;
-    });
+    this.getLinks();
   },
   methods: {
-    onFileChange(e) {
-      this.file = e[0];
+    getLinks() {
+      this.$store.dispatch("links").then((data) => {
+        this.items = data;
+      });
     },
-
     selectItem(item, index) {
       this.danger_modal = true;
       this.selected_item.index = index;
       this.selected_item.item = item;
-      console.log(this.selected_item);
     },
 
     deleteItem() {
       this.danger_modal = false;
-      this.$store.dispatch("deleteFile", this.selected_item.item.id).then(
-        () => {
-          this.successMsg("Deleted !");
-          this.items.splice(this.selected_item.index, 1);
-        },
-        () => {
-          this.errorMsg("An error occured");
-        }
-      );
+      this.$store
+        .dispatch("deleteLink", this.selected_item.item.id)
+        .then(
+          () => {
+            this.successMsg("Deleted !");
+            this.items.splice(this.selected_item.index, 1);
+          },
+          () => {
+            this.errorMsg("An error occured");
+          }
+        );
     },
 
-    passToUpdate(index){
-      this.$router.push({ name: 'File Update', params: { index_to_update: index}})
+    passToUpdate(item) {
+      this.$router.push({
+        name: "Save link",
+        params: { item_to_update: item },
+      });
     },
     successMsg(msg) {
       this.$toasted.show(msg, {

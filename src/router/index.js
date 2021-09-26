@@ -10,8 +10,10 @@ const TheContainer = () => import('@/containers/TheContainer')
 // Views
 const FileUpload = () => import('@/views/admin/files/FileUpload')
 const FileList = () => import('@/views/admin/files/FileList')
-const HtmlSnippet = () => import('@/views/admin/HtmlSnippet')
-const SaveLink = () => import('@/views/admin/SaveLink')
+const HtmlSnippet = () => import('@/views/admin/html_snippets/HtmlSnippet')
+const ListHtmlSnippet = () => import('@/views/admin/html_snippets/ListHtmlSnippet')
+const SaveLink = () => import('@/views/admin/links/SaveLink')
+const ListLinks = () => import('@/views/admin/links/ListLinks')
 
 
 Vue.use(Router)
@@ -59,12 +61,25 @@ function configRoutes () {
         {
           path: 'html-snippet',
           name: 'HTML Snippet',
-          component: HtmlSnippet
+          component: HtmlSnippet,
+          props:true
         },
+        {
+          path: 'htmlsnippet/list',
+          name: 'HTML Snippet List',
+          component: ListHtmlSnippet,
+        },
+        
         {
           path: 'save-link',
           name: 'Save link',
-          component: SaveLink
+          component: SaveLink,
+          props:true
+        },
+        {
+          path: 'links/list',
+          name: 'Links list',
+          component: ListLinks
         }
       ]
     }

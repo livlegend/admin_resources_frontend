@@ -6,7 +6,7 @@ import router from './router'
 import CoreuiVue from '@coreui/vue'
 import Toasted from 'vue-toasted';
 import { iconsSet as icons } from './assets/icons/icons.js'
-import store from './store'
+import store from './store/index'
 import VuePrism from 'vue-prism'
 
 

@@ -4,15 +4,12 @@
       <CCard>
         <CCardHeader>
           <CRow class="mx-2">
-            <strong>Files list
-                
-            </strong>
+            <strong>HTML Snippets list </strong>
 
-             <router-link class="ml-auto" to="/admin/file-upload">
-                <strong> Back to creating new </strong>
-              </router-link>
+            <router-link class="ml-auto" to="/admin/html-snippet">
+              <strong> Back to creating new </strong>
+            </router-link>
           </CRow>
-          
         </CCardHeader>
         <CCardBody>
           <CRow>
@@ -27,10 +24,24 @@
                 sorter
                 pagination
               >
-                <template #title="{item}">
+                <!-- <template #title="{item}">
                   <a :href="remote_url + '/upload_files/' + item.file_link" target="_blank" > <strong>{{
                     item.title
                   }}</strong></a>
+                </template> -->
+
+                <template #html_code="{item}">
+                    <td class="py-2">
+                        <CButton
+                      color="secondary"
+                      class="btn"
+                      variant="outline"
+                      square
+                      size="sm"
+                      @click="displayCode(item.html_code)"
+                    >Read...</CButton>
+                    </td>
+                    
                 </template>
 
                 <template #actions="{item, index}">
@@ -41,8 +52,7 @@
                       variant="outline"
                       square
                       size="sm"
-                      @click='passToUpdate(index)'
-                      
+                      @click="passToUpdate(item)"
                     >
                       Edit
                     </CButton>
@@ -63,6 +73,7 @@
         </CCardBody>
       </CCard>
     </CCol>
+    <!-- modal for deleting confirmation -->
     <CModal
       title="Confirm suppression"
       color="danger"
@@ -76,27 +87,50 @@
         <CButton @click="deleteItem" color="danger">Accept</CButton>
       </template>
     </CModal>
+
+    <!-- modal for code displaying -->
+    <CModal
+      :show.sync="primary_modal"
+      color="primary"
+      title="HTML code"
+    >
+    <div>
+        <pre aria-hidden="true">
+            <code>
+                {{code_to_display}}
+            </code>
+         </pre>
+    </div>
+        
+         <template #footer>
+        <CButton @click="primary_modal = false" color="secondary"
+          >Close</CButton
+        >
+      </template>
+    </CModal>
   </CRow>
 </template>
 
 <script>
 import { CDataTable } from "@coreui/vue/src";
-import { remote_url } from "@/api/api.js";
 
 export default {
-  name: "FileUpload",
+  name: "ListHtmlSnippets",
   components: { CDataTable },
   data() {
     return {
       items: [],
-      remote_url: remote_url,
       danger_modal: false,
+      primary_modal:false,
       selected_item: {
         index: null,
         item: {},
       },
+      code_to_display:"",
       fields: [
         "title",
+        "description",
+        "html_code",
         {
           key: "actions",
           label: "",
@@ -109,37 +143,46 @@ export default {
   },
   computed: {},
   mounted() {
-    this.$store.dispatch("files").then((data) => {
-      this.items = data;
-    });
+    this.getSnippets();
   },
   methods: {
-    onFileChange(e) {
-      this.file = e[0];
+    getSnippets() {
+      this.$store.dispatch("htmlSnippets").then((data) => {
+        this.items = data;
+      });
     },
-
     selectItem(item, index) {
       this.danger_modal = true;
       this.selected_item.index = index;
       this.selected_item.item = item;
-      console.log(this.selected_item);
     },
 
     deleteItem() {
       this.danger_modal = false;
-      this.$store.dispatch("deleteFile", this.selected_item.item.id).then(
-        () => {
-          this.successMsg("Deleted !");
-          this.items.splice(this.selected_item.index, 1);
-        },
-        () => {
-          this.errorMsg("An error occured");
-        }
-      );
+      this.$store
+        .dispatch("deleteHtmlSnippet", this.selected_item.item.id)
+        .then(
+          () => {
+            this.successMsg("Deleted !");
+        
+            this.items.splice(this.selected_item.index, 1);
+          },
+          () => {
+            this.errorMsg("An error occured");
+          }
+        );
+    },
+    displayCode(data){
+        this.code_to_display=data
+        
+        this.primary_modal=true;
     },
 
-    passToUpdate(index){
-      this.$router.push({ name: 'File Update', params: { index_to_update: index}})
+    passToUpdate(item) {
+      this.$router.push({
+        name: "HTML Snippet",
+        params: { item_to_update: item },
+      });
     },
     successMsg(msg) {
       this.$toasted.show(msg, {

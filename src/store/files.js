@@ -1,11 +1,6 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import ApiAdmin from "./api/_admin";
-Vue.use(Vuex);
+import ApiAdmin from "../api/_admin";
 
 const state = {
-  sidebarShow: "responsive",
-  sidebarMinimize: false,
   files:[]
 };
 
@@ -57,7 +52,7 @@ const actions = {
         }
       );
     });
-  },
+  },        
 
   updateFile({commit},data) {
     return new Promise((resolve, reject) => {
@@ -74,26 +69,15 @@ const actions = {
   },
 };
 const mutations = {
-  toggleSidebarDesktop(state) {
-    const sidebarOpened = [true, "responsive"].includes(state.sidebarShow);
-    state.sidebarShow = sidebarOpened ? false : "responsive";
-  },
-  toggleSidebarMobile(state) {
-    const sidebarClosed = [false, "responsive"].includes(state.sidebarShow);
-    state.sidebarShow = sidebarClosed ? true : "responsive";
-  },
-  set(state, [variable, value]) {
-    state[variable] = value;
-  },
 
   SET_FILES(state, files) {
     state.files = files;
   },
 };
 
-export default new Vuex.Store({
+export default {
   state,
   mutations,
   actions,
   getters
-});
+};

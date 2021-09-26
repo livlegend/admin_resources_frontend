@@ -11,10 +11,10 @@
           <CCardHeader>
             <CRow class="mx-2">
               <strong
-                >Upload file <span v-if="index_to_update">Update</span></strong
+                >Upload file <span v-if="index_to_update">- Update</span></strong
               >
               <router-link class="ml-auto" to="/admin/file-list">
-                <strong> List of files </strong></router-link
+                <strong> Files list</strong></router-link
               >
             </CRow>
           </CCardHeader>

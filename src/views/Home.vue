@@ -15,12 +15,11 @@
 				class="text-center py-5"
 				body-wrapper>
 				<CCardBody>
-					<CButton
-						color="light"
-						variant="outline"
-						size="lg">
+					<router-link
+						to="/visitor"
+						class="btn btn-light btn-outline btn-lg px-4">
 						Enter as Visitor!
-					</CButton>
+					</router-link>
 				</CCardBody>
             </CCard>
           </CCardGroup>

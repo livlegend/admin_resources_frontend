@@ -95,7 +95,7 @@
 import { CDataTable } from "@coreui/vue/src";
 
 export default {
-  name: "ListHtmlSnippets",
+  name: "ListLinks",
   components: { CDataTable },
   data() {
     return {

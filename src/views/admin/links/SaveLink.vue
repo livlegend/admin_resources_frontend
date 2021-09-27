@@ -35,7 +35,7 @@
                   v-model="data_link.link"
                   required
                 />
-                <span class="text-danger" v-if="invalid_url">Enter a valid link format: (Example www.thelink.com)</span>
+                <span class="text-danger" v-if="invalid_url">Enter a valid link format: (Example www.thelink.com) without the 'http(s)://'</span>
               </CCol>
             </CRow>
             <CRow class="mt-">  
@@ -98,7 +98,7 @@ export default {
   methods: {
      isValidURL(string) {
        /* eslint-disable no-useless-escape */
-        var res = string.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+        var res = string.match(/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
         return (res !== null)
     },
     formSubmit(e){

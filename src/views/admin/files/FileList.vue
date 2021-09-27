@@ -41,7 +41,7 @@
                       variant="outline"
                       square
                       size="sm"
-                      @click='passToUpdate(index)'
+                      @click='passToUpdate(item)'
                       
                     >
                       Edit
@@ -82,9 +82,8 @@
 <script>
 import { CDataTable } from "@coreui/vue/src";
 import { remote_url } from "@/api/api.js";
-
 export default {
-  name: "FileUpload",
+  name: "FileList",
   components: { CDataTable },
   data() {
     return {
@@ -114,17 +113,12 @@ export default {
     });
   },
   methods: {
-    onFileChange(e) {
-      this.file = e[0];
-    },
-
     selectItem(item, index) {
       this.danger_modal = true;
       this.selected_item.index = index;
       this.selected_item.item = item;
       console.log(this.selected_item);
     },
-
     deleteItem() {
       this.danger_modal = false;
       this.$store.dispatch("deleteFile", this.selected_item.item.id).then(
@@ -137,9 +131,8 @@ export default {
         }
       );
     },
-
-    passToUpdate(index){
-      this.$router.push({ name: 'File Update', params: { index_to_update: index}})
+    passToUpdate(item){
+      this.$router.push({ name: 'File Update', params: { item_to_update: item}})
     },
     successMsg(msg) {
       this.$toasted.show(msg, {

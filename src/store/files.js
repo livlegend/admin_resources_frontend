@@ -67,6 +67,19 @@ const actions = {
       );
     });
   },
+  downloadFile({commit},url) {
+    return new Promise((resolve, reject) => {
+      ApiAdmin._downloadFile(url).then(
+        (response) => {
+          resolve(response);
+          commit
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    });
+  },
 };
 const mutations = {
 

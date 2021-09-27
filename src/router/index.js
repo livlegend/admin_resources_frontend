@@ -6,6 +6,7 @@ const Home = () => import('@/views/Home')
 
 // Containers
 const TheContainer = () => import('@/containers/TheContainer')
+const TheVisitorContainer = () => import('@/containers/TheVisitorContainer')
 
 // Views
 const FileUpload = () => import('@/views/admin/files/FileUpload')
@@ -15,6 +16,9 @@ const ListHtmlSnippet = () => import('@/views/admin/html_snippets/ListHtmlSnippe
 const SaveLink = () => import('@/views/admin/links/SaveLink')
 const ListLinks = () => import('@/views/admin/links/ListLinks')
 
+const ListFile_v = () => import('@/views/visitor/Files')
+const ListHtmlSnippet_v = () => import('@/views/visitor/HtmlSnippets')
+const ListLinks_v = () => import('@/views/visitor/Links')
 
 Vue.use(Router)
 
@@ -35,6 +39,26 @@ function configRoutes () {
     {
       path: '/',
       redirect: '/home',
+    },
+    {
+      path: '/visitor',
+      name: 'Visitor',
+      redirect: '/visitor/files',
+      component:TheVisitorContainer,
+      children: [
+        {
+          path: 'files',
+          component: ListFile_v,
+        },
+        {
+          path: 'html-snippets',
+          component: ListHtmlSnippet_v,
+        },
+        {
+          path: 'links',
+          component: ListLinks_v,
+        },
+      ]
     },
     {
       path: '/admin',
@@ -83,6 +107,7 @@ function configRoutes () {
         }
       ]
     }
+
   ]
 }
 

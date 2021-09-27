@@ -95,7 +95,7 @@
       title="HTML code"
     >
     <div>
-        <pre aria-hidden="true">
+        <pre aria-hidden="true" >
             <code>
                 {{code_to_display}}
             </code>
@@ -174,7 +174,7 @@ export default {
     },
     displayCode(data){
         this.code_to_display=data
-        
+       
         this.primary_modal=true;
     },
 

@@ -11,7 +11,7 @@
           <CCardHeader>
             <CRow class="mx-2">
               <strong
-                >Upload file <span v-if="index_to_update">- Update</span></strong
+                >Upload file <span v-if="item_to_update">- Update</span></strong
               >
               <router-link class="ml-auto" to="/admin/file-list">
                 <strong> Files list</strong></router-link
@@ -36,9 +36,9 @@
                   placeholder="Choose a PDF file..."
                   accept=".pdf"
                   @change="onFileChange"
-                  :required="index_to_update==null"
+                  :required="item_to_update==null"
                 />
-                <small v-if="index_to_update"
+                <small v-if="item_to_update"
                   >The new selected file will replace the old</small
                 >
               </CCol>
@@ -61,7 +61,7 @@
                 </div>
                 <CIcon v-else name="cil-check-circle" class="mr-2" />
 
-                <span v-if="index_to_update">Update</span>
+                <span v-if="item_to_update">Update</span>
                 <span v-else>Submit</span>
               </CButton>
             </CRow>
@@ -82,11 +82,11 @@ export default {
       form_submitted: false,
     };
   },
-  props: ["index_to_update"],
+  props: ["item_to_update"],
   computed: {},
   mounted() {
-    if (this.index_to_update) {
-      this.title = this.$store.getters["files"][this.index_to_update].title;
+    if (this.item_to_update) {
+      this.title = this.item_to_update.title;
     }
   },
   methods: {
@@ -95,18 +95,14 @@ export default {
     },
     formSubmit(e) {
       e.preventDefault();
-
       // send the form
-
       this.form_submitted = true;
-
       let formData = new FormData();
       formData.append("title", this.title);
       formData.append("file", this.file);
-
-      if (this.index_to_update) {
+      if (this.item_to_update) {
         //in case of update
-        let id = this.$store.getters["files"][this.index_to_update].id;
+        let id = this.item_to_update.id;
         this.$store.dispatch("updateFile", { id: id, formData: formData }).then(
           () => {
             this.form_submitted = false;
@@ -133,7 +129,6 @@ export default {
         );
       }
     },
-
     successMsg(msg) {
       this.$toasted.show(msg, {
         action: [

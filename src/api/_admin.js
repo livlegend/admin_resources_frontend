@@ -95,5 +95,12 @@ export default {
         const promise = Api().delete('/links/'+id)
         return promise.then((response) => response.data)
     },
+    /**
+     * download file
+     */
+    _downloadFile(url) {
+        const promise = Api().get(url)
+        return promise.then((response) => response.data)
+    },
 
 }
